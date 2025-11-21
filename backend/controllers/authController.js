@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { promisePool } = require('../config/database');
+const promisePool = require('../config/database');
 
 // Generate JWT Token
 const generateToken = (user) => {
