@@ -1,11 +1,24 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const authRoutes = require('./routes/authRoutes');
+const employeeRoutes = require('./routes/employeeRoutes');
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/employees', require('./routes/employeeRoutes'));
+app.use('/api/attendance', require('./routes/attendanceRoutes'));
+app.use('/api/leaves', require('./routes/leaveRoutes'));
+app.use('/api/payroll', require('./routes/payrollRoutes'));
+app.use('/api/products', require('./routes/productRoutes'));
+app.use('/api/purchase', require('./routes/purchaseRoutes'));
+app.use('/api/sales', require('./routes/salesRoutes'));
+app.use('/api/finance', require('./routes/financeRoutes'));
+app.use('/api/analytics', require('./routes/analyticsRoutes'));
+
 
 // Allow frontend domain from Vercel
 app.use(cors({
