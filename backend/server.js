@@ -1,45 +1,56 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const authRoutes = require('./routes/authRoutes');
-const employeeRoutes = require('./routes/employeeRoutes');
-const bcrypt = require('bcryptjs');
-
 
 const app = express();
 
-app.use(cors());
+// Middleware
 app.use(express.json());
-app.use('/api/auth', require('./routes/authRoutes'));
-app.use('/api/employees', employeeRoutes);
-app.use('/api/attendance', require('./routes/attendanceRoutes'));
-app.use('/api/leaves', require('./routes/leaveRoutes'));
-app.use('/api/payroll', require('./routes/payrollRoutes'));
-app.use('/api/products', require('./routes/productRoutes'));
-app.use('/api/purchase', require('./routes/purchaseRoutes'));
-app.use('/api/sales', require('./routes/salesRoutes'));
-app.use('/api/finance', require('./routes/financeRoutes'));
-app.use('/api/analytics', require('./routes/analyticsRoutes'));
 
-
-// Allow frontend domain from Vercel
+// CORS for frontend
 app.use(cors({
-  origin: ["https://your-frontend.vercel.app"],   // replace with your URL
+  origin: ["https://your-frontend.vercel.app"], // ← replace with real Vercel URL
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
 
-// Import routes
-const routes = require("./routes");
-app.use("/api", routes);
+// ==== ROUTES ====
 
-// Health endpoint for Render
+// Auth
+app.use('/api/auth', require('./routes/authRoutes'));
+
+// Employees
+app.use('/api/employees', require('./routes/employeeRoutes'));
+
+// Attendance
+app.use('/api/attendance', require('./routes/attendanceRoutes'));
+
+// Leave
+app.use('/api/leaves', require('./routes/leaveRoutes'));
+
+// Payroll
+app.use('/api/payroll', require('./routes/payrollRoutes'));
+
+// Products
+app.use('/api/products', require('./routes/productRoutes'));
+
+// Purchase
+app.use('/api/purchase', require('./routes/purchaseRoutes'));
+
+// Sales
+app.use('/api/sales', require('./routes/salesRoutes'));
+
+// Finance
+app.use('/api/finance', require('./routes/financeRoutes'));
+
+// Analytics
+app.use('/api/analytics', require('./routes/analyticsRoutes'));
+
+
+// Health Check (Important for Render)
 app.get("/", (req, res) => {
   res.send("Backend is running on Render!");
 });
 
-const PORT = process.env.PORT || 10000; // Render sets its own port
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+const PORT = process.env.PORT || 10000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
