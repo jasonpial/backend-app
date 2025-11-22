@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './context/AuthContext';
+
 import Layout from './components/Layout';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
@@ -16,6 +17,9 @@ import Invoices from './pages/Invoices';
 import Expenses from './pages/Expenses';
 import Analytics from './pages/Analytics';
 
+// ----------------------
+// PRIVATE ROUTE
+// ----------------------
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
 
@@ -27,16 +31,23 @@ const PrivateRoute = ({ children }) => {
     );
   }
 
-  return user ? <Layout>{children}</Layout> : <Navigate to="/login" />;
+  return user ? <Layout>{children}</Layout> : <Navigate to="/login" replace />;
 };
 
+// ----------------------
+// MAIN APP
+// ----------------------
 function App() {
   return (
-    <AuthProvider>
+    <AuthProvider>   {/* <-- FIXED: AuthProvider MUST wrap Router */}
       <Router>
         <Toaster position="top-right" />
+
         <Routes>
+          {/* Public route */}
           <Route path="/login" element={<Login />} />
+
+          {/* Protected routes */}
           <Route path="/" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
           <Route path="/employees" element={<PrivateRoute><Employees /></PrivateRoute>} />
           <Route path="/attendance" element={<PrivateRoute><Attendance /></PrivateRoute>} />
@@ -48,7 +59,11 @@ function App() {
           <Route path="/invoices" element={<PrivateRoute><Invoices /></PrivateRoute>} />
           <Route path="/expenses" element={<PrivateRoute><Expenses /></PrivateRoute>} />
           <Route path="/analytics" element={<PrivateRoute><Analytics /></PrivateRoute>} />
+
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+
       </Router>
     </AuthProvider>
   );
