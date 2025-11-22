@@ -3,6 +3,8 @@ const express = require("express");
 const cors = require("cors");
 const authRoutes = require('./routes/authRoutes');
 const employeeRoutes = require('./routes/employeeRoutes');
+const bcrypt = require('bcryptjs');
+
 
 const app = express();
 
