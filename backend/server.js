@@ -10,8 +10,9 @@ app.use(express.json());
 // CORS for frontend
 app.use(cors({
   origin: [
-    "https://dbroft-app.vercel.app/"
-  ], // ← replace with real Vercel URL
+    "http://localhost:3000",           // local React
+    "https://dbroft-app.vercel.app"    // your Vercel frontend (fixed)
+  ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
